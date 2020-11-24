@@ -42,8 +42,8 @@ function getPeerDependencies(location: PackageLocation): PackageName[] {
     // Local packages should fullfill its own peerDependencies.
     return [];
   }
-  const pj: { peerDependencies?: { [name: string]: string } } = require(location.value);
-  const pd = pj.peerDependencies || {};
+  const pj: { peerDependencies?: { [name: string]: string }, peerDependenciesMeta?: { [name: string]: any } } = require(location.value);
+  const pd = {...(pj.peerDependencies || {}), ...(pj.peerDependenciesMeta || {})};
   const result : PackageName[] = Object.keys(pd).map(o => ({ value: o, type: "packageName" }));
   return result
 }
